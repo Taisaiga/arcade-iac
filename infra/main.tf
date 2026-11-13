@@ -10,9 +10,9 @@ resource "docker_volume" "records" {
 # Une borne (un conteneur) par ligne de la variable « bornes ».
 resource "docker_container" "borne" {
   for_each = var.bornes
-  name    = "arcade-${each.key}"
-  image   = docker_image.web.image_id
-  restart = "unless-stopped"
+  name     = "arcade-${each.key}"
+  image    = docker_image.web.image_id
+  restart  = "unless-stopped"
 
   # Le jeu est joignable sur ce poste uniquement, au port choisi.
   ports {
@@ -20,7 +20,7 @@ resource "docker_container" "borne" {
     external = each.value
     ip       = "127.0.0.1"
   }
-    # Le dossier records/ du site est rangé dans le volume.
+  # Le dossier records/ du site est rangé dans le volume.
   volumes {
     volume_name    = docker_volume.records.name
     container_path = "/usr/share/nginx/html/records"
